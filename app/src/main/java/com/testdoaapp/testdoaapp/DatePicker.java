@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
+
 /**
  * Created by valkeshpatel on 12/6/17.
  */
@@ -23,7 +24,6 @@ public class DatePicker extends DialogFragment
 
     @SuppressLint("ValidFragment")
     public DatePicker(DatabaseHelper db) {
-        System.out.println("===db===="+ db);
         this.db = db;
     }
 
@@ -49,7 +49,8 @@ public class DatePicker extends DialogFragment
         Contact contact =  new Contact(1, "valkesh", "9687605815", _time, _time);
         if (contact != null) {
             long count =  db.addContact(contact);
-            Toast.makeText(getActivity(), "Record added successfuly"+ count , Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), "Record added successfuly  "+ count , Toast.LENGTH_LONG).show();
         }
+
     }
 }

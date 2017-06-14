@@ -10,8 +10,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Calendar;
+import java.util.Collections;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -31,6 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_PH_NO = "phone_number";
     private static final String KEY_CHECKINTIME = "checkintime";
     private static final String KEY_CHECKOUTTIME = "checkouttime";
+    private static final String KEY_CHECKDATETIME = "datetime_entry";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -43,6 +46,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
                 + KEY_CHECKINTIME + " TEXT,"
                 + KEY_CHECKOUTTIME + " TEXT,"
+                + KEY_CHECKDATETIME + " TEXT,"
                 + KEY_PH_NO + " TEXT" + ")";
         db.execSQL(CREATE_CONTACTS_TABLE);
     }
@@ -65,12 +69,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     long addContact(Contact contact) {
         long count;
         SQLiteDatabase db = this.getWritableDatabase();
+        Calendar c = Calendar.getInstance();
+        System.out.println("Current time => " + c.getTime());
+
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+        String formattedDate = df.format(c.getTime());
 
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, contact.getName()); // Contact Name
-        values.put(KEY_PH_NO, contact.getPhoneNumber()); // Contact Phone
         values.put(KEY_CHECKINTIME, contact.get_check_in_time()); // Contact
         values.put(KEY_CHECKOUTTIME, contact.get_check_out_time()); // Contact
+        values.put(KEY_CHECKDATETIME, formattedDate); // Contact
+        values.put(KEY_PH_NO, contact.getPhoneNumber()); // Contact Phone
+
 
         // Inserting Row
         count = db.insert(TABLE_CONTACTS, null, values);
@@ -95,8 +106,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Getting All Contacts
-    public List<Contact> getAllContacts() {
-        List<Contact> contactList = new ArrayList<Contact>();
+    public ArrayList<Contact> getAllContacts() {
+        ArrayList<Contact> contactList = new ArrayList<Contact>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_CONTACTS;
 
@@ -109,12 +120,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 Contact contact = new Contact();
                 contact.setID(Integer.parseInt(cursor.getString(0)));
                 contact.setName(cursor.getString(1));
-                contact.setPhoneNumber(cursor.getString(2));
+                contact.set_check_in_time(cursor.getString(2));
+                contact.set_check_out_time(cursor.getString(3));
+                contact.set_date_time(cursor.getString(4));
                 // Adding contact to list
                 contactList.add(contact);
             } while (cursor.moveToNext());
         }
-
         // return contact list
         return contactList;
     }

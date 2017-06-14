@@ -12,6 +12,7 @@ public class Contact {
     String _phone_number;
     String _check_in_time;
     String _check_out_time;
+    String _date_time;
 
 
     // Empty constructor
@@ -79,5 +80,14 @@ public class Contact {
 
     public void set_check_out_time(String _check_out_time) {
         this._check_out_time = _check_out_time;
+    }
+
+
+    public String get_date_time() {
+        return _date_time;
+    }
+
+    public void set_date_time(String _date_time) {
+        this._date_time = _date_time;
     }
 }
