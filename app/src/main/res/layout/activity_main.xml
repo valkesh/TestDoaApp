@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:background="@color/colorPrimaryDark"
-                android:onClick="showTimePickerDialog"
+                android:onClick="inTime"
                 android:text="Check in"
                 android:textColor="#FFFFFF" />
 
@@ -46,7 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimaryDark"
-                android:onClick="showTimePickerDialog"
+                android:onClick="outTime"
                 android:text="Check out"
                 android:textColor="#FFFFFF" />
         </LinearLayout>

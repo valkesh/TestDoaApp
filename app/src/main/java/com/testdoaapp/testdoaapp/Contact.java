@@ -13,6 +13,9 @@ public class Contact {
     String _check_in_time;
     String _check_out_time;
     String _date_time;
+    int _isInTime;
+    String longtitude;
+    String latilude;
 
 
     // Empty constructor
@@ -21,12 +24,15 @@ public class Contact {
     }
 
     // constructor
-    public Contact(int id, String name, String _phone_number, String _check_in_time, String _check_out_time) {
+    public Contact(int id, String name, String _phone_number, String _check_in_time, String _check_out_time, int _isInTime, String latilude, String longtitude) {
         this._id = id;
         this._name = name;
         this._phone_number = _phone_number;
         this._check_in_time = _check_in_time;
         this._check_out_time = _check_out_time;
+        this._isInTime = _isInTime;
+        this.longtitude = longtitude;
+        this.latilude = latilude;
     }
 
     // constructor
@@ -89,5 +95,30 @@ public class Contact {
 
     public void set_date_time(String _date_time) {
         this._date_time = _date_time;
+    }
+
+    public int is_isInTime() {
+        return _isInTime;
+    }
+
+    public void set_isInTime(int _isInTime) {
+        this._isInTime = _isInTime;
+    }
+
+
+    public String getLongtitude() {
+        return longtitude;
+    }
+
+    public void setLongtitude(String longtitude) {
+        this.longtitude = longtitude;
+    }
+
+    public String getLatilude() {
+        return latilude;
+    }
+
+    public void setLatilude(String latilude) {
+        this.latilude = latilude;
     }
 }

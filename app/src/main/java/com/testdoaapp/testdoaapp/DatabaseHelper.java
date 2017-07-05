@@ -34,6 +34,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_CHECKINTIME = "checkintime";
     private static final String KEY_CHECKOUTTIME = "checkouttime";
     private static final String KEY_CHECKDATETIME = "datetime_entry";
+    private static final String KEY_ = "datetime_entry";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -100,7 +101,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.moveToFirst();
 
         Contact contact = new Contact(Integer.parseInt(cursor.getString(0)),
-                cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4));
+                cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getInt(5), cursor.getString(6), cursor.getString(7));
         // return contact
         return contact;
     }
