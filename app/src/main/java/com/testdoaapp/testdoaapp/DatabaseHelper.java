@@ -13,7 +13,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -33,7 +32,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_PH_NO = "phone_number";
     private static final String KEY_CHECKINTIME = "checkintime";
     private static final String KEY_CHECKOUTTIME = "checkouttime";
+    private static final String KEY_CHECKEDLATITUDE = "latitude";
+    private static final String KEY_CHECKEDLONGTITUDE = "longtitude";
     private static final String KEY_CHECKDATETIME = "datetime_entry";
+    private static final String KEY_CHECKEDISINTIME = "in_time";
     private static final String KEY_ = "datetime_entry";
 
     public DatabaseHelper(Context context) {
@@ -44,10 +46,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_CONTACTS + "("
-                + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
+                + KEY_ID + " INTEGER PRIMARY KEY,"
+                + KEY_NAME + " TEXT,"
                 + KEY_CHECKINTIME + " TEXT,"
                 + KEY_CHECKOUTTIME + " TEXT,"
+                + KEY_CHECKEDLATITUDE + " TEXT,"
+                + KEY_CHECKEDLONGTITUDE + " TEXT,"
                 + KEY_CHECKDATETIME + " TEXT,"
+                + KEY_CHECKEDISINTIME + " INTEGER,"
                 + KEY_PH_NO + " TEXT" + ")";
         db.execSQL(CREATE_CONTACTS_TABLE);
     }
@@ -123,7 +129,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 contact.setName(cursor.getString(1));
                 contact.set_check_in_time(cursor.getString(2));
                 contact.set_check_out_time(cursor.getString(3));
-                contact.set_date_time(cursor.getString(4));
+                contact.setLatilude(cursor.getString(4));
+                contact.setLongtitude(cursor.getString(5));
+                contact.set_date_time(cursor.getString(6));
+
                 // Adding contact to list
                 contactList.add(contact);
             } while (cursor.moveToNext());
