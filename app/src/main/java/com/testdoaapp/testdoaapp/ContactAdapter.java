@@ -26,7 +26,7 @@ public class ContactAdapter extends BaseAdapter {
         TextView textName;
         TextView textCheckInTime;
         TextView textCheckOutTime;
-        TextView textDateTime;
+        TextView textDateTime, textLocationAddress;
     }
 
     public ContactAdapter(ArrayList<Contact> data, Context context) {
@@ -69,6 +69,7 @@ public class ContactAdapter extends BaseAdapter {
             viewHolder.textCheckInTime = (TextView) convertView.findViewById(R.id.textCheckInTime);
             viewHolder.textCheckOutTime = (TextView) convertView.findViewById(R.id.textCheckOutTime);
             viewHolder.textDateTime = (TextView) convertView.findViewById(R.id.textDateTime);
+            viewHolder.textLocationAddress = (TextView) convertView.findViewById(R.id.textLocationAddress);
             result = convertView;
 
             convertView.setTag(viewHolder);
@@ -85,6 +86,7 @@ public class ContactAdapter extends BaseAdapter {
         viewHolder.textCheckInTime.setText(dataModel.get_check_in_time());
         viewHolder.textCheckOutTime.setText(dataModel.get_check_out_time());
         viewHolder.textDateTime.setText(dataModel.get_date_time());
+        viewHolder.textLocationAddress.setText(dataModel.getAddress());
 
         // Return the completed view to render on screen
         return convertView;

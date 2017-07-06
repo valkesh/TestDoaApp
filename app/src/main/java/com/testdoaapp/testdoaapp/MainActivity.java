@@ -2,6 +2,8 @@ package com.testdoaapp.testdoaapp;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +11,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -19,6 +22,8 @@ import android.widget.Toast;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -107,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
         getPermit(false);
     }
 
+    String address = "";
 
     public void checkGps(boolean is_in) {
         GPSTracker gps = new GPSTracker(MainActivity.this);
@@ -116,18 +122,23 @@ public class MainActivity extends AppCompatActivity {
             gps.getLongitude(); // returns longitude
 
 
-            System.out.println("===="+gps.getLatitude() );
-            System.out.println("===="+gps.getLongitude());
+            System.out.println("====" + gps.getLatitude());
+            System.out.println("====" + gps.getLongitude());
+
+
+            address = getCompleteAddressString(gps.getLatitude(), gps.getLongitude());
+
+            System.out.println("address" + address);
             if (is_in) {
                 String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
-                Contact contact = new Contact(1, "valkesh", "9687605815", currentDateTimeString, currentDateTimeString, 1, gps.getLatitude() + "", gps.getLongitude() + "");
+                Contact contact = new Contact(1, "valkesh", "9687605815", currentDateTimeString, currentDateTimeString, 1, gps.getLatitude() + "", gps.getLongitude() + "", address);
                 if (contact != null) {
                     long count = db.addContact(contact);
                     Toast.makeText(MainActivity.this, "Record added successfuly  " + count, Toast.LENGTH_LONG).show();
                 }
             } else if (!is_in) {
                 String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
-                Contact contact = new Contact(1, "valkesh", "9687605815", currentDateTimeString, currentDateTimeString, 2, gps.getLatitude() + "", gps.getLongitude() + "");
+                Contact contact = new Contact(1, "valkesh", "9687605815", currentDateTimeString, currentDateTimeString, 2, gps.getLatitude() + "", gps.getLongitude() + "", address);
                 if (contact != null) {
                     long count = db.addContact(contact);
                     Toast.makeText(MainActivity.this, "Record added successfuly  " + count, Toast.LENGTH_LONG).show();
@@ -151,5 +162,29 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    private String getCompleteAddressString(double LATITUDE, double LONGITUDE) {
+        String strAdd = "";
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
+            if (addresses != null) {
+                Address returnedAddress = addresses.get(0);
+                StringBuilder strReturnedAddress = new StringBuilder("");
+
+                for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
+                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+                }
+                strAdd = strReturnedAddress.toString();
+                Log.i("My Current loction address", "" + strReturnedAddress.toString());
+            } else {
+                Log.i("My Current loction address", "No Address returned!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.i("My Current loction address", "Canont get Address!");
+        }
+        return strAdd;
+    }
 }
 

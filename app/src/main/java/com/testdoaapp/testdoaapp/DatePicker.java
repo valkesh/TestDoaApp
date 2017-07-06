@@ -46,7 +46,7 @@ public class DatePicker extends DialogFragment
         System.out.println("=========minute========" + minute);
 
         String _time = String.valueOf(hourOfDay) + " " + String.valueOf(minute);
-        Contact contact =  new Contact(1, "valkesh", "9687605815", _time, _time, 0, "", "");
+        Contact contact =  new Contact(1, "valkesh", "9687605815", _time, _time, 0, "", "", "");
         if (contact != null) {
             long count =  db.addContact(contact);
             Toast.makeText(getActivity(), "Record added successfuly  "+ count , Toast.LENGTH_LONG).show();

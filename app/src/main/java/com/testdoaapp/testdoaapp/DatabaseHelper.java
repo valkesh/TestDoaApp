@@ -37,6 +37,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_CHECKDATETIME = "datetime_entry";
     private static final String KEY_CHECKEDISINTIME = "in_time";
     private static final String KEY_ = "datetime_entry";
+    private static final String KEY_ADDRESS = "address";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -53,6 +54,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + KEY_CHECKEDLATITUDE + " TEXT,"
                 + KEY_CHECKEDLONGTITUDE + " TEXT,"
                 + KEY_CHECKDATETIME + " TEXT,"
+                + KEY_ADDRESS + " TEXT,"
                 + KEY_CHECKEDISINTIME + " INTEGER,"
                 + KEY_PH_NO + " TEXT" + ")";
         db.execSQL(CREATE_CONTACTS_TABLE);
@@ -77,7 +79,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long count;
         SQLiteDatabase db = this.getWritableDatabase();
         Calendar c = Calendar.getInstance();
-        System.out.println("Current time => " + c.getTime());
+        System.out.println("Current time => " + c.getTime() );
+        System.out.println("contact.getPhoneNumber() => " + contact.getPhoneNumber() );
 
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
         String formattedDate = df.format(c.getTime());
@@ -87,6 +90,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_CHECKINTIME, contact.get_check_in_time()); // Contact
         values.put(KEY_CHECKOUTTIME, contact.get_check_out_time()); // Contact
         values.put(KEY_CHECKDATETIME, formattedDate); // Contact
+        values.put(KEY_ADDRESS, contact.getAddress()); // Contact
         values.put(KEY_PH_NO, contact.getPhoneNumber()); // Contact Phone
 
 
@@ -107,7 +111,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.moveToFirst();
 
         Contact contact = new Contact(Integer.parseInt(cursor.getString(0)),
-                cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getInt(5), cursor.getString(6), cursor.getString(7));
+                cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getInt(5), cursor.getString(6), cursor.getString(7), cursor.getString(8));
         // return contact
         return contact;
     }
@@ -132,6 +136,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 contact.setLatilude(cursor.getString(4));
                 contact.setLongtitude(cursor.getString(5));
                 contact.set_date_time(cursor.getString(6));
+                contact.setAddress(cursor.getString(7));
+
+
 
                 // Adding contact to list
                 contactList.add(contact);
