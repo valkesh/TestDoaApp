@@ -38,6 +38,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_CHECKEDISINTIME = "in_time";
     private static final String KEY_ = "datetime_entry";
     private static final String KEY_ADDRESS = "address";
+    private static final String KEY_LOGIN_ID = "login_id";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -56,6 +57,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + KEY_CHECKDATETIME + " TEXT,"
                 + KEY_ADDRESS + " TEXT,"
                 + KEY_CHECKEDISINTIME + " INTEGER,"
+                + KEY_LOGIN_ID + " INTEGER,"
                 + KEY_PH_NO + " TEXT" + ")";
         db.execSQL(CREATE_CONTACTS_TABLE);
     }
@@ -92,6 +94,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_CHECKDATETIME, formattedDate); // Contact
         values.put(KEY_ADDRESS, contact.getAddress()); // Contact
         values.put(KEY_PH_NO, contact.getPhoneNumber()); // Contact Phone
+        values.put(KEY_LOGIN_ID, contact.getID()); // Contact Phone
 
 
         // Inserting Row
@@ -117,10 +120,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Getting All Contacts
-    public ArrayList<Contact> getAllContacts() {
+    public ArrayList<Contact> getAllContacts(int id) {
         ArrayList<Contact> contactList = new ArrayList<Contact>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_CONTACTS;
+        if(id == -1){
+            return contactList;
+        }
+
+        String selectQuery = "SELECT  * FROM " + TABLE_CONTACTS+ " where " + KEY_LOGIN_ID + "='" + id + "'";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -137,8 +144,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 contact.setLongtitude(cursor.getString(5));
                 contact.set_date_time(cursor.getString(6));
                 contact.setAddress(cursor.getString(7));
-
-
 
                 // Adding contact to list
                 contactList.add(contact);

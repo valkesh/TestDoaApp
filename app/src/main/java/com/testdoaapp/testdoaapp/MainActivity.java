@@ -1,6 +1,7 @@
 package com.testdoaapp.testdoaapp;
 
 import android.Manifest;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
     DatabaseHelper db;
+    DatabaseHandler dblogin;
     ListView listData;
     LinearLayout lnButton;
     ContactAdapter contactAdapter;
@@ -47,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_dashboard:
                     listData.setVisibility(View.VISIBLE);
                     lnButton.setVisibility(View.GONE);
-                    contacts = db.getAllContacts();
+                    contacts = db.getAllContacts(preferences.getInt("userid", -1));
                     contactAdapter = new ContactAdapter(contacts, MainActivity.this);
                     listData.setAdapter(contactAdapter);
                     mTextMessage.setText(R.string.title_dashboard);
@@ -76,19 +78,24 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    SharedPreferences preferences;
+    public String PREF_FILE_NAME = "login";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         db = new DatabaseHelper(this);
+        preferences = getSharedPreferences(PREF_FILE_NAME, MODE_PRIVATE);
+
+        dblogin = new DatabaseHandler(MainActivity.this, null, null, 1);
         mTextMessage = (TextView) findViewById(R.id.message);
         lnButton = (LinearLayout) findViewById(R.id.lnButton);
         listData = (ListView) findViewById(R.id.listData);
-
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        contacts = db.getAllContacts();
+
+        contacts = db.getAllContacts(preferences.getInt("userid", -1));
         contactAdapter = new ContactAdapter(contacts, this);
         listData.setAdapter(contactAdapter);
     }
@@ -125,20 +132,21 @@ public class MainActivity extends AppCompatActivity {
             System.out.println("====" + gps.getLatitude());
             System.out.println("====" + gps.getLongitude());
 
+// then you use
+
 
             address = getCompleteAddressString(gps.getLatitude(), gps.getLongitude());
-
             System.out.println("address" + address);
             if (is_in) {
                 String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
-                Contact contact = new Contact(1, "valkesh", "9687605815", currentDateTimeString, currentDateTimeString, 1, gps.getLatitude() + "", gps.getLongitude() + "", address);
+                Contact contact = new Contact(preferences.getInt("userid", -1), preferences.getString("username", "unknown"), "9687605815", currentDateTimeString, currentDateTimeString, 1, gps.getLatitude() + "", gps.getLongitude() + "", address);
                 if (contact != null) {
                     long count = db.addContact(contact);
                     Toast.makeText(MainActivity.this, "Record added successfuly  " + count, Toast.LENGTH_LONG).show();
                 }
             } else if (!is_in) {
                 String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
-                Contact contact = new Contact(1, "valkesh", "9687605815", currentDateTimeString, currentDateTimeString, 2, gps.getLatitude() + "", gps.getLongitude() + "", address);
+                Contact contact = new Contact(preferences.getInt("userid", -1), preferences.getString("username", "unknown"), "9687605815", currentDateTimeString, currentDateTimeString, 2, gps.getLatitude() + "", gps.getLongitude() + "", address);
                 if (contact != null) {
                     long count = db.addContact(contact);
                     Toast.makeText(MainActivity.this, "Record added successfuly  " + count, Toast.LENGTH_LONG).show();
