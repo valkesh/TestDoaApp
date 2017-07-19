@@ -184,13 +184,13 @@ public class MainActivity extends AppCompatActivity {
                     strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
                 }
                 strAdd = strReturnedAddress.toString();
-                Log.i("My Current loction address", "" + strReturnedAddress.toString());
+                Log.i("My Current location address", "" + strReturnedAddress.toString());
             } else {
-                Log.i("My Current loction address", "No Address returned!");
+                Log.i("My Current location address", "No Address returned!");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Log.i("My Current loction address", "Canont get Address!");
+            Log.i("My Current location address", "Canont get Address!");
         }
         return strAdd;
     }

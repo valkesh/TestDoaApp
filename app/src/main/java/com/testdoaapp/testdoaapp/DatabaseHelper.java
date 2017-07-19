@@ -148,7 +148,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 contact.setLongtitude(cursor.getString(5));
                 contact.set_date_time(cursor.getString(6));
                 contact.setAddress(cursor.getString(7));
-                contact.set_check_in_time(cursor.getString(8));
+                contact.set_check_in_time(cursor.getString(9));
 
                 // Adding contact to list
                 contactList.add(contact);
