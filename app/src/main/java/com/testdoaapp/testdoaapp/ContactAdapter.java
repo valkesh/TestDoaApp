@@ -87,10 +87,19 @@ public class ContactAdapter extends BaseAdapter {
 
         viewHolder.textDateTime.setText(dataModel.get_date_time());
         viewHolder.textLocationAddress.setText(dataModel.getAddress());
+
+        viewHolder.textCheckInTime.setText(dataModel.get_check_in_time());
+        viewHolder.textCheckOutTime.setText(dataModel.get_check_out_time());
+
+        System.out.println("=dataModel.get_check_in_time()=" + dataModel.get_check_in_time());
+        System.out.println("=dataModel.get_check_out_time()=" + dataModel.get_check_out_time());
+        System.out.println("=dataModel.is_isInTime()=" + dataModel.is_isInTime());
         if (dataModel.is_isInTime() == 1) {
-            viewHolder.textCheckInTime.setText(dataModel.get_check_in_time());
+            viewHolder.textCheckOutTime.setVisibility(View.GONE);
+            viewHolder.textCheckInTime.setVisibility(View.VISIBLE);
         } else if (dataModel.is_isInTime() == 2) {
-            viewHolder.textCheckOutTime.setText(dataModel.get_check_out_time());
+            viewHolder.textCheckOutTime.setVisibility(View.VISIBLE);
+            viewHolder.textCheckInTime.setVisibility(View.GONE);
         }
 
         // Return the completed view to render on screen
