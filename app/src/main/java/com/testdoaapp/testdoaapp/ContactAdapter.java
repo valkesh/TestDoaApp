@@ -34,6 +34,7 @@ public class ContactAdapter extends BaseAdapter {
         this.mContext = context;
 
     }
+
     private int lastPosition = -1;
 
     @Override
@@ -83,10 +84,14 @@ public class ContactAdapter extends BaseAdapter {
         lastPosition = position;
 
         viewHolder.textName.setText(dataModel.getName());
-        viewHolder.textCheckInTime.setText(dataModel.get_check_in_time());
-        viewHolder.textCheckOutTime.setText(dataModel.get_check_out_time());
+
         viewHolder.textDateTime.setText(dataModel.get_date_time());
         viewHolder.textLocationAddress.setText(dataModel.getAddress());
+        if (dataModel.is_isInTime() == 1) {
+            viewHolder.textCheckInTime.setText(dataModel.get_check_in_time());
+        } else if (dataModel.is_isInTime() == 2) {
+            viewHolder.textCheckOutTime.setText(dataModel.get_check_out_time());
+        }
 
         // Return the completed view to render on screen
         return convertView;

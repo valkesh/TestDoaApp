@@ -36,6 +36,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_CHECKEDLONGTITUDE = "longtitude";
     private static final String KEY_CHECKDATETIME = "datetime_entry";
     private static final String KEY_CHECKEDISINTIME = "in_time";
+    private static final String KEY_ISCHECKIN = "is_checkin";
+
     private static final String KEY_ = "datetime_entry";
     private static final String KEY_ADDRESS = "address";
     private static final String KEY_LOGIN_ID = "login_id";
@@ -57,6 +59,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + KEY_CHECKDATETIME + " TEXT,"
                 + KEY_ADDRESS + " TEXT,"
                 + KEY_CHECKEDISINTIME + " INTEGER,"
+                + KEY_ISCHECKIN + " INTEGER,"
                 + KEY_LOGIN_ID + " INTEGER,"
                 + KEY_PH_NO + " TEXT" + ")";
         db.execSQL(CREATE_CONTACTS_TABLE);
@@ -81,8 +84,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long count;
         SQLiteDatabase db = this.getWritableDatabase();
         Calendar c = Calendar.getInstance();
-        System.out.println("Current time => " + c.getTime() );
-        System.out.println("contact.getPhoneNumber() => " + contact.getPhoneNumber() );
+        System.out.println("Current time => " + c.getTime());
+        System.out.println("contact.getPhoneNumber() => " + contact.getPhoneNumber());
 
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
         String formattedDate = df.format(c.getTime());
@@ -94,6 +97,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_CHECKDATETIME, formattedDate); // Contact
         values.put(KEY_ADDRESS, contact.getAddress()); // Contact
         values.put(KEY_PH_NO, contact.getPhoneNumber()); // Contact Phone
+        values.put(KEY_ISCHECKIN, contact.is_isInTime()); // Contact Phone
         values.put(KEY_LOGIN_ID, contact.getID()); // Contact Phone
 
 
@@ -123,11 +127,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public ArrayList<Contact> getAllContacts(int id) {
         ArrayList<Contact> contactList = new ArrayList<Contact>();
         // Select All Query
-        if(id == -1){
+        if (id == -1) {
             return contactList;
         }
 
-        String selectQuery = "SELECT  * FROM " + TABLE_CONTACTS+ " where " + KEY_LOGIN_ID + "='" + id + "'";
+        String selectQuery = "SELECT  * FROM " + TABLE_CONTACTS + " where " + KEY_LOGIN_ID + "='" + id + "'";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -144,6 +148,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 contact.setLongtitude(cursor.getString(5));
                 contact.set_date_time(cursor.getString(6));
                 contact.setAddress(cursor.getString(7));
+                contact.set_check_in_time(cursor.getString(8));
 
                 // Adding contact to list
                 contactList.add(contact);
